@@ -69,7 +69,57 @@
         user.logInfo.bind(marina)(); //Так можно преобределить контекст this
     /*___________________________________*/
 
+    //Promise (смысл такой каждый promise что то делает и возвращает результат в resolve. а далее then принимает эти данные дальше по цепочки)
+        const p = new Promise((resolve, reject) =>{
+            setTimeout(()=>{
+                console.log('Preparind Data...');
+                const backendData = {
+                    server: 'aws',
+                    port: 2000,
+                    status: 'working'
+                }
+                resolve(backendData) //В resolve передаем результат работы Promise
+            }, 2000)
+        });
+            p.then(data => { //В data сейчас пришло то что передали в resolve (то есть backendData)
+                console.log(data);
+                return new Promise((resolve, reject) => { //Дальше пишем цепочку в resolve будем передать уже изменные данные
+                    setTimeout(() => {
+                        data.modified = true
+                        resolve(data) //Изменили объект backendData который пришел в этот промис с названием data и с помощью resolve передаем дальше
+                    }, 2000)
+                })
+            })
+            .then(data => {
+                console.log(data); //Вывели уже изменные данные прокинутые выше из resolve
+            })
+            .catch(err => console.log('Error ', err)); //Catch выводит ошибку если она есть
+    /*___________________________________*/
 
+    //Getters and Setters (При такой реализации объекта доступно get и set)
+        const objPerson = Object.create (
+            {},
+            {
+                name: {
+                    value: 'Artem',
+                },
+                birthYear: {
+                    value: 1988
+                },
+                age: {
+                    //Get - может изменять любое свойство объекта
+                    get() {
+                        return new Date().getFullYear() - this.birthYear;
+                    },
+                    //Set - сработает в случае выполнения get (то есть если изменить свойство birthYear например objPerson.birthYear = 100)
+                    set(value) { //В value прейдет новое значение age
+                        document.body.style.background = 'red';
+                        console.log(value);
+                    }
+                }
+            },
+        );
+    /*___________________________________*/
 
 
 }());
