@@ -121,5 +121,56 @@
         );
     /*___________________________________*/
 
+    //Class в JavaScript
+        class Animal { //В классе описываем поля объекта
+            constructor(option) {
+                this.name = option.name
+                this.age = option.age
+                this.hasTail = option.hasTail
+            }
+            //Метод - (так создаеться методы в классе)
+            voice() {
+                console.log('I am Animal')
+            }
+        }
+        const animal = new Animal({ //Создание объекта как экземпляр класса
+            name: 'Animal',
+            age: 5,
+            hasTail: true
+        })
+        console.log(animal);
+
+        class Cat extends Animal { //С помощью extends происходит наследование от класса Animal
+            constructor(option) {
+                super(option); //Если нужно в объект который наследуется от класса Animal, задать новое свойство используем метод "super"
+                this.color = option.color;
+            }
+            //Метод
+            voice() {
+                super.voice(); //С помощью метода super передадим метод voice от родителя, а потом уже отработает данные метод voice (наслденика класса Animal  )
+                console.log('I am Cat')
+            }
+            //Get - создание геттера (функция которая берет данные из объекта и делает с ними что-то)
+            get ageInfo() {
+                return this.age * 7;
+            }
+            //Set - отработает после get ageInfo, а в newAge придет результат отработки get ageInfo
+            set ageInfo(newAge) {
+                this.age = newAge
+            }
+        }
+        const cat = new Cat({
+            name: 'Cat',
+            age: 7,
+            hasTail: true,
+            color: 'black'
+        })
+        console.log(cat);
+        console.log(cat.voice());
+        console.log(cat.ageInfo);
+    /*___________________________________*/
+
+
+
 
 }());
