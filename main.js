@@ -170,7 +170,74 @@
         console.log(cat.ageInfo);
     /*___________________________________*/
 
+    //Функции Генераторы
+        function* numberGen(n = 10) { //Функция генератор создаеться при помощи *
+            for (let i = 0; i < n; i++) {
+                yield i //yield - это поочередное выполнение функции
+            }
+        }
+        const num = numberGen(8);
+        console.log(num.next()); //При каждом вызове функции при помощи next() - будет выполняться yield
+        console.log(num.next()); //Когда в yield придет последние данные, функция отдаст done: true
 
+    /*___________________________________*/
 
+    //Работа с массивами
+        const people = [
+            { name: 'Владилен', age: 17, budget: 40000 },
+            { name: 'Игорь', age: 46, budget: 45000 },
+            { name: 'Елена', age: 15, budget: 20000 },
+            { name: 'Максим', age: 32, budget: 30000 },
+            { name: 'Дмитрий', age: 28, budget: 1000 },
+            { name: 'Алексей', age: 26, budget: 2000 }
+        ]
+        //Цикл for of (в person придет каждый элемент массива)
+        for (let person of people) {
+            console.log(person)
+        }
+
+        //Цикл forEach (в person придет каждый элемент массива)
+        people.forEach(person => {
+            console.log(person)
+        })
+
+        //Цикл map (в person придет каждый элемент массива)
+        const newPeople = people.map(person => {
+            return person.name
+        })
+        console.log(newPeople);
+
+        //Вывод нескольких строк в в цикле map
+        const newPeople2 = people.map(person => `${person.name} - ${person.age}`)
+        console.log(newPeople2);
+
+        //Filter
+        const adults = people.filter(person => person.age >= 18) //Отфильтруем массив от людей которым не 18
+        console.log(adults);
+
+        //Reduce
+        const amount = people.reduce((total, person) => total + person.budget, 0); //Посчтиаем общий бюджет (0 - это с какого элемента массива начать)
+        console.log(amount);
+
+        //FindIndex
+        const igorIndex = people.findIndex(person => person.name === 'Игорь') //Найдет index по условию
+        console.log(igorIndex);
+
+        //Find
+        const igor = people.find(person => person.name === 'Игорь') //Отфильтруем массив people по имени пользователя
+        console.log(igor);
+
+        //Групповое использлвание различных циклов
+        const amount2 = people
+            .filter(person => person.budget > 3000)
+            .map(person => {
+                return {
+                    info: `${person.name} - ${person.age}`,
+                    budget: person.budget
+                }
+            })
+            .reduce((total, person) => total + person.budget, 0)
+        console.log(amount2);
+    /*___________________________________*/
 
 }());
