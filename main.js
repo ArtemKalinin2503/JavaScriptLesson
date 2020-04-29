@@ -240,4 +240,189 @@
         console.log(amount2);
     /*___________________________________*/
 
+    //Map - карта в JavaScript (позврляет работать с объектами)
+        const entries = [
+            ['name', 'Vladilen'],
+            ['age', 25],
+            ['job', 'FullStack']
+        ]
+        const map = new Map(entries); //Создание карты
+            map
+            .set('newField', 42); //С помощью метода set - создаем новый элемент объекта в карте
+        map.delete('age'); //Удаление из карты значения
+        for (let [key, value] of map) { //Перебор карты и получение данных из нее
+            console.log(key, value);
+        }
+        console.log(map.get('newField')); //Через метод get выводим данные из карты
+        console.log(map.has('age')); //Проверка на наличие значения в карте
+        console.log(map.size); //Узнать размер карты
+
+        //Пример использования
+        const users = [
+            {name: 'Elena'},
+            {name: 'Alex'},
+            {name: 'Irina'}
+        ]
+        //Создали карту
+        const visits = new Map()
+            .set(users[0], new Date()) //С помощью метода set создали новые ключи в объекте users
+            .set(users[1], new Date(new Date().getTime() + 1000 * 60))
+            .set(users[2], new Date(new Date().getTime() + 5000 * 60))
+        //Данная функция будет получать данные о приходе usera
+        function lastVisit(user) {
+            return visits.get(user) //С помощью метода get - получаем данные
+        }
+        console.log(lastVisit(users[2]));
+    /*___________________________________*/
+
+    //Set в JavaScript (позволяют работать с массивами данных)
+        const set = new Set([1, 2, 3, 3, 3, 4, 5, 5, 6])
+        set.add(10) //С помощью метода add можно добавлять данные в массив
+        set.delete(1) //Метод delete - удаляет элемент из массива
+        console.log(set); //В set - прийдут только уникальные данные без повторов
+        console.log(set.has(4)); //Метод gas проверяет если такой элемент в массиве
+        console.log(set.size) //Метод size - покажет длину массива
+        set.clear() //Метод clear - удаляет все данные из массива
+        //Перебор set
+        for (let key of set) {
+            console.log(key); //Получим каждый элемент массива set
+        }
+
+        //Пример
+        function uniqValues(array) { //Функция отфильтрует переданный массив и оставит только уникальные данные
+            return Array.from(new Set(array))
+        }
+        console.log(uniqValues([1, 1, 2, 2, 4, 4, 4, 4, 5, 6, 6, 6]));
+    /*___________________________________*/
+
+    //XHR Request
+        const requestURL = 'https://jsonplaceholder.typicode.com/users';
+        //Ajax с Promise
+        //GET
+        function sendRequestGet(method, url) {
+            return new Promise((resolve, reject) => { //resolve - когда все выполнилось хорошо, reject - когда есть ошибки
+                const xhr = new XMLHttpRequest()
+                xhr.open(method, url)
+                xhr.responseType = 'json'
+                xhr.onload = () => {
+                    if (xhr.status >= 400) { //Если ошибка
+                        reject(xhr.response)
+                    } else { //Если все удачно и данные пришли
+                        resolve(xhr.response);
+                    }
+                }
+                //Обработка ошибки
+                xhr.onerror = () => {
+                    reject(xhr.response);
+                }
+                xhr.send()
+            })
+        }
+        sendRequestGet('GET', requestURL) //В data приходит ответ (то есть resolve)
+            .then(data => console.log(data))
+            .catch(err => console.log(err)) //Если ошибка (то есть reject)
+        //POST
+        function sendRequestPost(method, url, body) {
+            return new Promise((resolve, reject) => { //resolve - когда все выполнилось хорошо, reject - когда есть ошибки
+                const xhr = new XMLHttpRequest()
+                xhr.open(method, url)
+                xhr.responseType = 'json'
+                xhr.setRequestHeader('Content-Type','application/json')
+                xhr.onload = () => {
+                    if (xhr.status >= 400) { //Если ошибка
+                        reject(xhr.response)
+                    } else { //Если все удачно и данные пришли
+                        resolve(xhr.response);
+                    }
+                }
+                //Обработка ошибки
+                xhr.onerror = () => {
+                    reject(xhr.response);
+                }
+                xhr.send(JSON.stringify(body))
+            })
+        }
+        sendRequestPost('POST', requestURL, {name: 'Vladilen', age: 26}) //Передача параметров для POST запроса
+            .then(data => console.log(data)) //В data приходит ответ (то есть resolve)
+            .catch(err => console.log(err)) //Если ошибка (то есть reject)
+    /*___________________________________*/
+
+    //Fetch
+        const requestURL2 = 'https://jsonplaceholder.typicode.com/users';
+        //GET
+        function sendRequestFetchGet(method, url) {
+            return fetch(url).then(response => {
+                return response.json()
+            })
+        }
+        sendRequestFetchGet('GET', requestURL2)
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+        //POST
+        function sendRequestFetchGPost(method, url, body = null) {
+            const headers = {
+                'Content-Type' : 'application/json'
+            }
+            return fetch(url, {
+                method: method,
+                body: JSON.stringify(body),
+                headers: headers
+            }).then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                return  response.json().then(error => {
+                    const e = new Error('Что-то пошло не так')
+                    e.data = error
+                    throw e
+                })
+            })
+        }
+        sendRequestFetchGPost('POST', requestURL2,{name: 'Artem', age: 26} )
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+
+    /*___________________________________*/
+
+    //Spread оператор (разварачивает массив)
+        const citiesRussia = ['Москва', 'Тверь', 'Казань', 'Новосибирск'];
+        const citiesEurope = ['Берлин', 'Прага', 'Париж'];
+        const allCities = [...citiesRussia, 'Вашингтон', ...citiesEurope]; //Так записали массив citiesRussia и citiesEurope
+        console.log(allCities);
+
+        const citiesRussiaPopulation = {
+            Moscow: 20,
+            Tver: 8,
+            Kazan: 5,
+            Novosibirsk: 3
+        }
+
+        const citiesEuropaPopulation = {
+            Praha: 20,
+            Berlin: 8,
+            Paris: 5,
+        }
+
+        console.log({...citiesRussiaPopulation}) //Так развернули объект
+        console.log({...citiesRussiaPopulation, ...citiesEuropaPopulation}) //объединили два объекта
+
+        //Поиск самого большого числа в массиве
+        const numberArr = [2, 5, 8, 42, 56];
+        console.log(Math.max(...numberArr));
+
+        //Работа с dom деревом
+        const divs = document.querySelectorAll('div');
+        const nods = [...divs]; //Так можно получить массив элементов не коллекцию, а массив для работы как с массивом
+    /*___________________________________*/
+
+    //Rest оператор
+        function sum(a, b, ...rest) {
+            return a + b + rest.reduce((a, i) => a + i, 0)
+        }
+        const numbers2 = [1, 2, 5, 8];
+        console.log(sum(...numbers2)); //Получим сумму всех числ в массиве
+    /*___________________________________*/
+
+
+
 }());
