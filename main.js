@@ -381,7 +381,6 @@
         sendRequestFetchGPost('POST', requestURL2,{name: 'Artem', age: 26} )
             .then(data => console.log(data))
             .catch(err => console.log(err))
-
     /*___________________________________*/
 
     //Spread оператор (разварачивает массив)
@@ -423,6 +422,62 @@
         console.log(sum(...numbers2)); //Получим сумму всех числ в массиве
     /*___________________________________*/
 
+    //Деструктуризация
+        //Для работы с массивом
+        function calcValues(a, b) {
+            return [
+                a + b,
+                a - b,
+                a * b,
+                a / b
+            ]
+        }
+        const [resultOne, resultTwo] = calcValues(42,10); //Функция будет выполнять условия и складывать все в массив
+        console.log(resultOne, resultTwo); //Каждая переменная это результат одной операции по порядку (если на пропусть одну операцию просто указываем зяпятую , )
+
+        //Для работы с Object
+        const personDest = {
+            name: 'Max',
+            age: 20,
+            address: {
+                country: 'Russia',
+                city: 'Moscow'
+            }
+        }
+        const {name, age: agePerson, address: {country, city}} = personDest; //Получение данных из объекта + переопределение названия ключа
+        console.log(name, agePerson, country, city);
+
+        //Работа с функциями
+        function logPerson({name, age}) {
+            console.log(name + ' ' + age)
+        }
+        logPerson(personDest);
+    /*___________________________________*/
+
+    //LocalStorage (работает только со строками и возвращает только строки)
+        const myNumber = 42;
+        localStorage.setItem('number', myNumber.toString()); //Метод setItem - записыает данные в localStorage
+        localStorage.getItem('number'); //Метод getItem - возвращает из localStorage данные
+        localStorage.removeItem('number'); //Метод removeItem - удаляет переаданные данные из localStorage
+        localStorage.clear(); //Удаляет все записи в localStorage
+
+        //Работа с объектами
+        const objectStorage = {
+            name: 'Max',
+            age: 20
+        }
+        localStorage.setItem('person', JSON.stringify(objectStorage)); //Записали объект в localStorage
+        const raw = localStorage.getItem('person'); //Получение данных (но нужно использовать JSON.parse)
+        const resultLocal = JSON.parse(raw);
+        console.log(resultLocal);
+        resultLocal.name = 'Vladilen'; //Так можно перезаписать объект в localStorage
+        console.log(resultLocal);
+
+        //Отслеживание изменений в localStorage если приложение открыто в разных вкладках (отрабатывает при каждом изменение localStorage)
+        window.addEventListener('storage', event => {
+            console.log(event);
+        });
+    /*___________________________________*/
 
 
 }());
